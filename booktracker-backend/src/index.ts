@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import dotenv from "dotenv";
-import { noteRoutes } from "./src/routes/noteRoutes";
-import { bookRoutes } from "./src/routes/bookRoute";
+import { noteRoutes } from "./routes/noteRoute";
+import { bookRoutes } from "./routes/bookRoute";
 
 dotenv.config();
 

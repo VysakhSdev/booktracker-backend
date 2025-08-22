@@ -1,8 +1,7 @@
 import { Elysia } from "elysia";
 import { db } from "../db/index";
 import { eq } from "drizzle-orm";
-import { v4 as uuidv4 } from "uuid";
-import { books } from "../models/books";
+import { books, type NewBook } from "../models/books";
 import {
   createBookSchema,
   updateBookSchema,
@@ -29,12 +28,12 @@ export const bookRoutes = new Elysia()
   .get("/books/:id", async ({ params, set }) => {
     try {
       const { id } = bookParamsSchema.parse(params);
-      console.log(id, "weq");
 
       if (!id) {
         set.status = 400;
         return { error: "Book ID is required" };
       }
+
       const book = await db.select().from(books).where(eq(books.id, id));
       if (!book.length) {
         set.status = 404;
@@ -58,14 +57,15 @@ export const bookRoutes = new Elysia()
   .post("/books", async ({ body, set }) => {
     try {
       const validatedBody = createBookSchema.parse(body);
-      const newBook = {
-        id: uuidv4(),
+
+      const newBook: NewBook = {
         title: validatedBody.title,
         author: validatedBody.author || "Unknown Author",
         status: validatedBody.status || "not_started",
-        createdAt: new Date(),
       };
+
       await db.insert(books).values(newBook);
+
       set.status = 201;
       return {
         success: true,
@@ -84,6 +84,12 @@ export const bookRoutes = new Elysia()
   .put("/books/:id", async ({ params, body, set }) => {
     try {
       const { id } = bookParamsSchema.parse(params);
+
+      if (!id) {
+        set.status = 400;
+        return { error: "Book ID is required" };
+      }
+
       const validatedBody = updateBookSchema.parse(body);
 
       const [updatedBook] = await db
@@ -114,6 +120,12 @@ export const bookRoutes = new Elysia()
   .delete("/books/:id", async ({ params, set }) => {
     try {
       const { id } = bookParamsSchema.parse(params);
+
+      if (!id) {
+        set.status = 400;
+        return { error: "Book ID is required" };
+      }
+
       const deletedCount = await db.delete(books).where(eq(books.id, id));
 
       if (!deletedCount) {

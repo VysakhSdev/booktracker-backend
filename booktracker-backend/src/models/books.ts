@@ -1,3 +1,4 @@
+import type { InferInsertModel } from "drizzle-orm";
 import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
 
 export const books = pgTable("books", {
@@ -9,3 +10,5 @@ export const books = pgTable("books", {
     .notNull(),                                
   createdAt: timestamp("created_at").defaultNow().notNull(), 
 });
+
+export type NewBook = InferInsertModel<typeof books>;

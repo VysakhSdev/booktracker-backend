@@ -1,5 +1,6 @@
 import { pgTable, text, uuid, timestamp } from "drizzle-orm/pg-core";
 import { books } from "./books";
+import type { InferInsertModel } from "drizzle-orm";
 
 export const notes = pgTable("notes", {
   id: uuid("id").defaultRandom().primaryKey(),     
@@ -7,3 +8,5 @@ export const notes = pgTable("notes", {
   content: text("content").notNull(),             
   createdAt: timestamp("created_at").defaultNow().notNull(), 
 });
+
+export type NewNotes = InferInsertModel<typeof notes>;
