@@ -152,5 +152,4 @@ Example: `http://localhost:3000/books`
 
 ```env
 DATABASE_URL=postgres://postgres:Vysakh@123@localhost:5432/booktracker
-PORT=3000
 ```
