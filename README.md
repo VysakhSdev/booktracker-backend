@@ -59,7 +59,6 @@ Add your PostgreSQL credentials and port:
 
 ```env
 DATABASE_URL=postgres://postgres:Vysakh@123@localhost:5432/booktracker
-PORT=3000
 ```
 
 ---
